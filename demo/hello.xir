@@ -1,0 +1,21 @@
+// XIRASM 0.3.5 演示源 —— UTF-8（无 BOM）
+// 演示：x86-64 指令 + 编译期函数/循环 + 中文字符串字面量的编码链路
+x86.use64();
+
+// 编译期函数：汇编阶段展开成数据，输出里不残留任何运行时代码
+fn emit_square_table(count: u8) {
+    for value in range(0, count) {
+        dd(value * value);
+    }
+}
+
+entry:
+    mov eax, 42                 // 返回值 42
+    ret
+
+squares:
+    emit_square_table(4);       // -> 0, 1, 4, 9（每个 4 字节）
+
+// 中文以 UTF-8 字节写入二进制；listing 会回显本行，用来验证编码
+banner:
+    db("中文 XIRASM 演示");

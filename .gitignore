@@ -1,0 +1,4 @@
+# 汇编产物：CI 中作为 artifact 上传，不入库
+*.bin
+*.lst
+demo-summary.md

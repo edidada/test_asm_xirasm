@@ -1,0 +1,36 @@
+name: XIRASM 演示 (Windows x64 / UTF-8)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  demo:
+    name: 汇编演示 · win11 x64 (CPU)
+    runs-on: windows-2022
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v5
+
+      - name: 运行 XIRASM 演示 (UTF-8)
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+          ./scripts/run-demo.ps1
+
+      - name: 上传演示产物
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xirasm-demo-${{ github.run_number }}
+          path: |
+            demo/hello.bin
+            demo/hello.lst
+          if-no-files-found: warn
